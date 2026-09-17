@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Complaint | Smart Government</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef5ff, #f8fbff);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        nav {
+            background: #123b70;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        nav h2 {
+            font-size: 22px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 50px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #123b70;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 18px;
+            border: none;
+            border-radius: 9px;
+            background: #123b70;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d2d57;
+        }
+
+        #complaintDetails {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .info {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid #123b70;
+        }
+
+        .info p {
+            margin: 10px 0;
+        }
+
+        .complaint-id {
+            font-size: 22px;
+            font-weight: bold;
+            color: #123b70;
+        }
+
+        .timeline {
+            margin-top: 25px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 18px 0;
+        }
+
+        .circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .step.active .circle {
+            background: #123b70;
+            color: white;
+        }
+
+        .step.active .step-text {
+            font-weight: bold;
+            color: #123b70;
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+
+    <h2>Smart Grievance</h2>
+
+    <div>
+        <a href="index.html">Home</a>
+        <a href="grievance.html">File Grievance</a>
+        <a href="track.html">Track</a>
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Track Your Complaint</h1>
+
+        <p class="subtitle">
+            Enter your complaint ID to view the current status.
+        </p>
+
+
+        <label>Complaint ID</label>
+
+        <input
+            type="text"
+            id="searchId"
+            placeholder="Example: GRV202697588"
+        >
+
+
+        <button onclick="trackComplaint()">
+            Track Complaint
+        </button>
+
+
+        <div
+            id="message"
+            class="message">
+            Complaint not found. Please check your Complaint ID.
+        </div>
+
+
+        <div id="complaintDetails">
+
+            <div class="info">
+
+                <h2>Complaint Details</h2>
+
+                <p>
+                    <strong>Complaint ID:</strong>
+                    <span
+                        class="complaint-id"
+                        id="displayId">
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Name:</strong>
+                    <span id="displayName"></span>
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    <span id="displayLocation"></span>
+                </p>
+
+                <p>
+                    <strong>Category:</strong>
+                    <span id="displayCategory"></span>
+                </p>
+
+                <p>
+                    <strong>Department:</strong>
+                    <span id="displayDepartment"></span>
+                </p>
+
+                <p>
+                    <strong>Local Office:</strong>
+                    <span id="displayOffice"></span>
+                </p>
+
+                <p>
+                    <strong>Priority:</strong>
+                    <span id="displayPriority"></span>
+                </p>
+
+                <p>
+                    <strong>Current Status:</strong>
+                    <strong id="displayStatus"></strong>
+                </p>
+
+            </div>
+
+
+            <div class="timeline">
+
+                <h2>Status Timeline</h2>
+
+
+                <div
+                    class="step"
+                    id="step1">
+
+                    <div class="circle">1</div>
+
+                    <div class="step-text">
+                        Submitted
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="step"
+                    id="step2">
+
+                    <div class="circle">2</div>
+
+                    <div class="step-text">
+                        Under Review
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="step"
+                    id="step3">
+
+                    <div class="circle">3</div>
+
+                    <div class="step-text">
+                        Assigned
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="step"
+                    id="step4">
+
+                    <div class="circle">4</div>
+
+                    <div class="step-text">
+                        In Progress
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="step"
+                    id="step5">
+
+                    <div class="circle">5</div>
+
+                    <div class="step-text">
+                        Resolved
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function trackComplaint() {
+
+    const searchId =
+        document
+        .getElementById("searchId")
+        .value
+        .trim()
+        .toUpperCase();
+
+
+    const complaints =
+        JSON.parse(
+            localStorage.getItem("complaints")
+        ) || [];
+
+
+    const complaint =
+        complaints.find(
+            item => item.id === searchId
+        );
+
+
+    const details =
+        document.getElementById(
+            "complaintDetails"
+        );
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (!complaint) {
+
+        details.style.display = "none";
+
+        message.style.display = "block";
+
+        return;
+    }
+
+
+    message.style.display = "none";
+
+    details.style.display = "block";
+
+
+    document
+        .getElementById("displayId")
+        .textContent = complaint.id;
+
+
+    document
+        .getElementById("displayName")
+        .textContent = complaint.name;
+
+
+    document
+        .getElementById("displayLocation")
+        .textContent = complaint.location;
+
+
+    document
+        .getElementById("displayCategory")
+        .textContent = complaint.category;
+
+
+    document
+        .getElementById("displayDepartment")
+        .textContent = complaint.department;
+
+
+    document
+        .getElementById("displayOffice")
+        .textContent = complaint.office;
+
+
+    document
+        .getElementById("displayPriority")
+        .textContent = complaint.priority;
+
+
+    document
+        .getElementById("displayStatus")
+        .textContent = complaint.status;
+
+
+    const statusOrder = [
+        "Submitted",
+        "Under Review",
+        "Assigned",
+        "In Progress",
+        "Resolved"
+    ];
+
+
+    const currentIndex =
+        statusOrder.indexOf(
+            complaint.status
+        );
+
+
+    for (
+        let i = 0;
+        i < statusOrder.length;
+        i++
+    ) {
+
+        const step =
+            document.getElementById(
+                "step" + (i + 1)
+            );
+
+
+        if (i <= currentIndex) {
+
+            step.classList.add("active");
+
+        } else {
+
+            step.classList.remove("active");
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
