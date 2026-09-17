@@ -482,6 +482,211 @@ loadDashboard();
 
 </script>
 
+<style>
 
+.analytics {
+    background: white;
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+}
+
+.analytics h2 {
+    color: #123b70;
+    margin-bottom: 25px;
+}
+
+.chart-row {
+    margin: 18px 0;
+}
+
+.chart-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.bar-container {
+    width: 100%;
+    height: 25px;
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    background: #123b70;
+    border-radius: 8px;
+    width: 0%;
+    transition: width 0.5s;
+}
+
+</style>
+
+
+<div class="analytics">
+
+    <h2>Grievance Analytics</h2>
+
+    <div class="chart-row">
+
+        <div class="chart-label">
+            <span>Public Infrastructure</span>
+            <span id="infrastructureCount">0</span>
+        </div>
+
+        <div class="bar-container">
+            <div
+                class="bar"
+                id="infrastructureBar">
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="chart-row">
+
+        <div class="chart-label">
+            <span>Water</span>
+            <span id="waterCount">0</span>
+        </div>
+
+        <div class="bar-container">
+            <div
+                class="bar"
+                id="waterBar">
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="chart-row">
+
+        <div class="chart-label">
+            <span>Road</span>
+            <span id="roadCount">0</span>
+        </div>
+
+        <div class="bar-container">
+            <div
+                class="bar"
+                id="roadBar">
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="chart-row">
+
+        <div class="chart-label">
+            <span>Sanitation</span>
+            <span id="sanitationCount">0</span>
+        </div>
+
+        <div class="bar-container">
+            <div
+                class="bar"
+                id="sanitationBar">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function loadAnalytics() {
+
+    const complaints =
+        JSON.parse(
+            localStorage.getItem("complaints")
+        ) || [];
+
+
+    const total =
+        complaints.length || 1;
+
+
+    const infrastructure =
+        complaints.filter(
+            c => c.category === "Public Infrastructure"
+        ).length;
+
+
+    const water =
+        complaints.filter(
+            c => c.category === "Water"
+        ).length;
+
+
+    const road =
+        complaints.filter(
+            c => c.category === "Road"
+        ).length;
+
+
+    const sanitation =
+        complaints.filter(
+            c => c.category === "Sanitation"
+        ).length;
+
+
+    document.getElementById(
+        "infrastructureCount"
+    ).textContent = infrastructure;
+
+
+    document.getElementById(
+        "waterCount"
+    ).textContent = water;
+
+
+    document.getElementById(
+        "roadCount"
+    ).textContent = road;
+
+
+    document.getElementById(
+        "sanitationCount"
+    ).textContent = sanitation;
+
+
+    document.getElementById(
+        "infrastructureBar"
+    ).style.width =
+        (infrastructure / total * 100) + "%";
+
+
+    document.getElementById(
+        "waterBar"
+    ).style.width =
+        (water / total * 100) + "%";
+
+
+    document.getElementById(
+        "roadBar"
+    ).style.width =
+        (road / total * 100) + "%";
+
+
+    document.getElementById(
+        "sanitationBar"
+    ).style.width =
+        (sanitation / total * 100) + "%";
+
+}
+
+
+loadAnalytics();
+
+</script>
 </body>
 </html>
