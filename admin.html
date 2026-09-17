@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Smart Grievance</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        nav {
+            background: #123b70;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            font-size: 22px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        h1 {
+            color: #123b70;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+        }
+
+        .card h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #123b70;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #123b70;
+            color: white;
+            padding: 13px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        select {
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: white;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .id {
+            font-weight: bold;
+            color: #123b70;
+        }
+
+        @media (max-width: 900px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            table {
+                min-width: 900px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<nav>
+
+    <h2>Smart Grievance - Admin</h2>
+
+    <div>
+
+        <a href="index.html">Home</a>
+
+        <a href="grievance.html">File Grievance</a>
+
+        <a href="track.html">Track</a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <h1>Admin Dashboard</h1>
+
+    <p class="subtitle">
+        Manage citizen grievances and update complaint status.
+    </p>
+
+
+    <!-- STATISTICS -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Total Complaints</h3>
+
+            <div
+                class="number"
+                id="total">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Submitted</h3>
+
+            <div
+                class="number"
+                id="submitted">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Under Review</h3>
+
+            <div
+                class="number"
+                id="review">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>In Progress</h3>
+
+            <div
+                class="number"
+                id="progress">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Resolved</h3>
+
+            <div
+                class="number"
+                id="resolved">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPLAINT TABLE -->
+
+    <div class="table-card">
+
+        <h2>Complaint Management</h2>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Complaint ID</th>
+
+                    <th>Name</th>
+
+                    <th>Category</th>
+
+                    <th>Department</th>
+
+                    <th>Location</th>
+
+                    <th>Priority</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="complaintTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+function loadDashboard() {
+
+    const complaints =
+        JSON.parse(
+            localStorage.getItem("complaints")
+        ) || [];
+
+
+    // UPDATE COUNTS
+
+    document.getElementById("total")
+        .textContent = complaints.length;
+
+
+    document.getElementById("submitted")
+        .textContent =
+        complaints.filter(
+            c => c.status === "Submitted"
+        ).length;
+
+
+    document.getElementById("review")
+        .textContent =
+        complaints.filter(
+            c => c.status === "Under Review"
+        ).length;
+
+
+    document.getElementById("progress")
+        .textContent =
+        complaints.filter(
+            c => c.status === "In Progress"
+        ).length;
+
+
+    document.getElementById("resolved")
+        .textContent =
+        complaints.filter(
+            c => c.status === "Resolved"
+        ).length;
+
+
+    const table =
+        document.getElementById(
+            "complaintTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if (complaints.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty">
+                    No complaints submitted yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    complaints.forEach(
+        (complaint, index) => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td class="id">
+                    ${complaint.id}
+                </td>
+
+                <td>
+                    ${complaint.name}
+                </td>
+
+                <td>
+                    ${complaint.category}
+                </td>
+
+                <td>
+                    ${complaint.department}
+                </td>
+
+                <td>
+                    ${complaint.location}
+                </td>
+
+                <td>
+                    ${complaint.priority}
+                </td>
+
+                <td>
+
+                    <select
+                        onchange="updateStatus(${index}, this.value)"
+                    >
+
+                        <option value="Submitted"
+                            ${complaint.status === "Submitted" ? "selected" : ""}>
+                            Submitted
+                        </option>
+
+                        <option value="Under Review"
+                            ${complaint.status === "Under Review" ? "selected" : ""}>
+                            Under Review
+                        </option>
+
+                        <option value="Assigned"
+                            ${complaint.status === "Assigned" ? "selected" : ""}>
+                            Assigned
+                        </option>
+
+                        <option value="In Progress"
+                            ${complaint.status === "In Progress" ? "selected" : ""}>
+                            In Progress
+                        </option>
+
+                        <option value="Resolved"
+                            ${complaint.status === "Resolved" ? "selected" : ""}>
+                            Resolved
+                        </option>
+
+                    </select>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
+
+}
+
+
+function updateStatus(index, newStatus) {
+
+    let complaints =
+        JSON.parse(
+            localStorage.getItem("complaints")
+        ) || [];
+
+
+    if (!complaints[index]) {
+        return;
+    }
+
+
+    complaints[index].status =
+        newStatus;
+
+
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(complaints)
+    );
+
+
+    loadDashboard();
+
+
+    alert(
+        "Complaint status updated successfully!"
+    );
+
+}
+
+
+loadDashboard();
+
+
+</script>
+
+
+</body>
+</html>
