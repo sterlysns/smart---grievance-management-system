@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrievanceAI — Smart Government Grievance Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#082b49;--blue:#0969b5;--cyan:#18a7c9;--green:#16845d;--ink:#172b3d;--muted:#66798a;--bg:#f5f8fb;--card:#fff;--line:#dce5ec;--shadow:0 16px 45px rgba(8,43,73,.10);--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}button,input,textarea,select{font:inherit}
+.header{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:20}
+.logo{display:flex;align-items:center;gap:12px;font-family:"Plus Jakarta Sans";font-weight:800;color:var(--navy);font-size:20px}.logoMark{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:#fff;font-weight:800}
+.nav{display:flex;gap:24px;align-items:center}.nav a{color:#4d6274;text-decoration:none;font-size:14px;font-weight:600;cursor:pointer}.nav a:hover{color:var(--blue)}
+.lang{border:1px solid var(--line);padding:9px 12px;border-radius:10px;background:white;color:var(--ink)}
+main{min-height:calc(100vh - 76px)}.screen{display:none;max-width:1100px;margin:auto;padding:55px 24px 75px;animation:fade .3s ease}.screen.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.hero{max-width:760px;margin:35px auto;text-align:center}.eyebrow{color:var(--green);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase}.hero h1{font-family:"Plus Jakarta Sans";font-size:48px;line-height:1.1;color:var(--navy);margin:15px 0}.hero p{color:var(--muted);font-size:17px;line-height:1.7}
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}.btn{border:0;border-radius:11px;padding:13px 21px;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:#fff}.primary:hover{background:#075997}.secondary{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.infoStrip{margin:35px auto 0;background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px 18px;display:flex;gap:12px;align-items:center;justify-content:center;color:#617486;font-size:13px;max-width:720px}
+.progress{display:flex;align-items:center;justify-content:center;gap:0;margin:4px auto 38px;max-width:900px}.step{display:flex;align-items:center;color:#8493a0;font-size:12px;font-weight:700}.circle{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:2px solid #cbd7e0;background:#fff}.step.active{color:var(--blue)}.step.active .circle{border-color:var(--blue);background:#eaf5fd;color:var(--blue)}.step.done .circle{background:var(--green);border-color:var(--green);color:#fff}.connector{width:70px;height:2px;background:#d9e3ea}.step.done + .connector{background:#8ccdb3}
+.pageTitle{text-align:center;margin-bottom:28px}.pageTitle h2{font-family:"Plus Jakarta Sans";font-size:31px;color:var(--navy);margin:0 0 8px}.pageTitle p{color:var(--muted);margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.full{grid-column:1/-1}.field label{display:block;font-size:13px;font-weight:800;color:#43596a;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:1px solid #ccd9e3;border-radius:10px;padding:12px 13px;background:#fff;outline:none}.field textarea{min-height:130px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #e8f4fc}
+.optionGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.option{border:1px solid var(--line);background:#fff;border-radius:14px;padding:17px;cursor:pointer;text-align:left}.option.selected{border:2px solid var(--blue);background:#f0f8fd}.option b{display:block;margin-bottom:5px;color:var(--navy)}.option span{font-size:12px;color:var(--muted)}
+.bottom{display:flex;justify-content:space-between;margin-top:24px}.review{display:grid;grid-template-columns:1fr 1fr;gap:14px}.reviewItem{border:1px solid var(--line);border-radius:12px;padding:15px}.reviewItem small{color:var(--muted);display:block;margin-bottom:5px}.reviewItem strong{color:var(--navy)}
+.aiBox{background:linear-gradient(135deg,#eef8fd,#f0faf6);border:1px solid #cfe4e8;border-radius:18px;padding:26px;text-align:center}.loader{width:46px;height:46px;border:4px solid #cce5ed;border-top-color:var(--blue);border-radius:50%;animation:spin 1s linear infinite;margin:10px auto 20px}@keyframes spin{to{transform:rotate(360deg)}}
+.resultGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 10px 28px rgba(8,43,73,.06)}.tag{display:inline-block;background:#eaf7f1;color:var(--green);font-size:11px;font-weight:800;padding:6px 9px;border-radius:20px}.result h3{margin:12px 0 8px;color:var(--navy)}.result p{color:var(--muted);line-height:1.55;font-size:13px}.confidence{font-size:12px;color:var(--blue);font-weight:800}
+.timeline{position:relative;margin:15px 0}.tl{display:flex;gap:16px;position:relative;padding:0 0 22px}.dot{width:14px;height:14px;border-radius:50%;background:#c7d3dc;margin-top:4px;flex:none}.tl.done .dot{background:var(--green)}.tl.current .dot{background:var(--blue);box-shadow:0 0 0 5px #e2f2fb}.tl h4{margin:0 0 3px;color:var(--navy)}.tl p{margin:0;color:var(--muted);font-size:12px}
+.success{text-align:center;padding:35px}.successIcon{width:72px;height:72px;background:#e9f8f0;color:var(--green);border-radius:50%;display:grid;place-items:center;font-size:34px;margin:auto}.complaintId{font-size:28px;color:var(--navy);font-weight:800;margin:15px 0}.notice{background:#fff8e6;border:1px solid #f1dfaa;border-radius:12px;padding:13px;color:#7a5b11;font-size:13px;margin-top:18px}
+footer{padding:20px;text-align:center;color:#718393;font-size:12px;border-top:1px solid var(--line);background:#fff}
+@media(max-width:760px){.header{padding:0 18px}.nav{display:none}.hero h1{font-size:36px}.formGrid,.review,.resultGrid{grid-template-columns:1fr}.optionGrid{grid-template-columns:1fr}.connector{width:18px}.step span{display:none}.screen{padding:35px 16px 55px}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo"><div class="logoMark">G</div>Grievance<span style="color:#16845d">AI</span></div>
+  <nav class="nav"><a onclick="go('home')">Home</a><a onclick="go('submit')">File Grievance</a><a onclick="go('track')">Track Complaint</a><a onclick="go('about')">How It Works</a></nav>
+  <select class="lang" aria-label="Language"><option>English</option><option>Tamil</option></select>
+</header>
+
+<main>
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="eyebrow">AI-Powered Public Service</div>
+    <h1>File Government Grievances the Smarter Way</h1>
+    <p>Describe your problem in simple words. GrievanceAI helps identify the right department and local office, then gives you a complaint ID to track the progress.</p>
+    <div class="actions"><button class="btn primary" onclick="start()">File a Grievance →</button><button class="btn secondary" onclick="go('track')">Track Existing Complaint</button></div>
+    <div class="infoStrip">✓ AI-assisted department routing &nbsp; • &nbsp; ✓ Location-based office mapping &nbsp; • &nbsp; ✓ Complaint tracking</div>
+  </div>
+</section>
+
+<section id="submit" class="screen">
+  <div class="progress" id="progress"></div>
+  <div id="submitPages"></div>
+</section>
+
+<section id="track" class="screen">
+  <div class="pageTitle"><h2>Track Your Complaint</h2><p>Enter your grievance ID to view the latest status.</p></div>
+  <div class="card" style="max-width:650px;margin:auto">
+    <div class="field"><label>Complaint ID</label><input id="trackId" placeholder="Example: GRV2026XXXX"></div>
+    <div class="actions"><button class="btn primary" onclick="track()">Check Status</button></div>
+    <div id="trackResult"></div>
+  </div>
+</section>
+
+<section id="about" class="screen">
+  <div class="pageTitle"><h2>How GrievanceAI Works</h2><p>A simple next-step process from complaint to resolution.</p></div>
+  <div class="resultGrid">
+    <div class="result"><span class="tag">01</span><h3>Tell Us Your Problem</h3><p>Write your grievance naturally and add your area, landmark and pincode. You can optionally attach supporting evidence.</p></div>
+    <div class="result"><span class="tag">02</span><h3>AI Understands It</h3><p>The system analyzes keywords and context to identify the likely complaint category and responsible department.</p></div>
+    <div class="result"><span class="tag">03</span><h3>Route to the Right Office</h3><p>Location information is used in this demo to suggest the relevant local office and verified contact details.</p></div>
+    <div class="result"><span class="tag">04</span><h3>Track Every Stage</h3><p>After submission, you receive a grievance ID and can follow Submitted → Under Review → Assigned → In Progress → Resolved.</p></div>
+  </div>
+  <div class="actions"><button class="btn primary" onclick="start()">Start a Grievance →</button></div>
+</section>
+</main>
+<footer>GrievanceAI Demo • Frontend-only academic project • AI routing shown is a demonstration and not an official government service.</footer>
+
+<script>
+const state={page:1,data:{},id:null};
+const pages=[
+`<div class="pageTitle"><h2>1. Describe Your Grievance</h2><p>Start by telling us what went wrong in your own words.</p></div>
+<div class="card"><div class="field"><label>Complaint Description *</label><textarea id="desc" placeholder="Example: The street light near our street has not been working for the past week."></textarea></div><div class="bottom"><span></span><button class="btn primary" onclick="next()">Next →</button></div></div>`,
+`<div class="pageTitle"><h2>2. Add Location Details</h2><p>These details help route your grievance to the appropriate local office.</p></div>
+<div class="card"><div class="formGrid"><div class="field"><label>Street / Area *</label><input id="area" placeholder="Enter street or area"></div><div class="field"><label>Landmark</label><input id="landmark" placeholder="Nearby landmark"></div><div class="field"><label>District *</label><input id="district" placeholder="Enter district"></div><div class="field"><label>Pincode *</label><input id="pin" placeholder="6-digit pincode" maxlength="6"></div></div><div class="bottom"><button class="btn secondary" onclick="prev()">← Back</button><button class="btn primary" onclick="next()">Next →</button></div></div>`,
+`<div class="pageTitle"><h2>3. Select the Issue Area</h2><p>Choose the category that best matches your complaint. AI will refine the routing next.</p></div>
+<div class="card"><div class="optionGrid">
+<div class="option" onclick="choose(this,'Infrastructure')"><b>🏙 Infrastructure</b><span>Roads, street lights, drainage</span></div>
+<div class="option" onclick="choose(this,'Water & Sanitation')"><b>💧 Water & Sanitation</b><span>Water supply, waste, sewage</span></div>
+<div class="option" onclick="choose(this,'Electricity')"><b>⚡ Electricity</b><span>Power supply and electrical issues</span></div>
+<div class="option" onclick="choose(this,'Public Transport')"><b>🚌 Public Transport</b><span>Buses, stops and transport</span></div>
+<div class="option" onclick="choose(this,'Public Services')"><b>🏛 Public Services</b><span>Certificates and administration</span></div>
+<div class="option" onclick="choose(this,'Other')"><b>📌 Other</b><span>Any other public grievance</span></div>
+</div><div class="bottom"><button class="btn secondary" onclick="prev()">← Back</button><button class="btn primary" onclick="next()">Next →</button></div></div>`,
+`<div class="pageTitle"><h2>4. Review & Submit</h2><p>Check the information before AI analysis and complaint submission.</p></div>
+<div class="card"><div class="review" id="review"></div><div class="notice">Your information is used only for this frontend demonstration. No real government complaint is submitted.</div><div class="bottom"><button class="btn secondary" onclick="prev()">← Back</button><button class="btn primary" onclick="analyze()">Analyze Grievance →</button></div></div>`,
+`<div class="pageTitle"><h2>AI Analysis</h2><p>Understanding your grievance and identifying the likely department.</p></div><div class="aiBox"><div class="loader"></div><h3>Analyzing complaint...</h3><p id="aiText">Classifying issue, department and local office.</p></div>`
+];
+
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function start(){state.page=1;state.data={};renderSubmit();go('submit')}
+function renderSubmit(){
+ document.getElementById('submitPages').innerHTML=pages.map((x,i)=>`<div class="subpage" style="display:${i+1===state.page?'block':'none'}">${x}</div>`).join('');
+ const labels=['Problem','Location','Issue Area','Review','AI Analysis'];
+ document.getElementById('progress').innerHTML=labels.map((x,i)=>`<div class="step ${i+1===state.page?'active':''} ${i+1<state.page?'done':''}"><div class="circle">${i+1<state.page?'✓':i+1}</div><span style="margin-left:6px">${x}</span></div>${i<4?'<div class="connector"></div>':''}`).join('');
+ if(state.page===4) fillReview();
+}
+function next(){
+ if(state.page===1){let v=document.getElementById('desc').value.trim();if(!v)return alert('Please describe your grievance.');state.data.desc=v}
+ if(state.page===2){let a=document.getElementById('area').value.trim(),d=document.getElementById('district').value.trim(),p=document.getElementById('pin').value.trim();if(!a||!d||p.length!==6)return alert('Please enter area, district and valid 6-digit pincode.');state.data.area=a;state.data.landmark=document.getElementById('landmark').value;state.data.district=d;state.data.pin=p}
+ if(state.page===3){if(!state.data.category)return alert('Please select an issue area.')}
+ state.page++;renderSubmit();window.scrollTo({top:0,behavior:'smooth'})
+}
+function prev(){state.page=Math.max(1,state.page-1);renderSubmit()}
+function choose(el,val){document.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');state.data.category=val}
+function fillReview(){document.getElementById('review').innerHTML=`<div class="reviewItem"><small>Complaint</small><strong>${esc(state.data.desc)}</strong></div><div class="reviewItem"><small>Category</small><strong>${esc(state.data.category)}</strong></div><div class="reviewItem"><small>Location</small><strong>${esc(state.data.area)}, ${esc(state.data.district)}</strong></div><div class="reviewItem"><small>Pincode</small><strong>${esc(state.data.pin)}</strong></div>`}
+function analyze(){state.page=5;renderSubmit();setTimeout(()=>{let r=route(state.data.desc,state.data.category);state.data.route=r;showResults(r)},1100)}
+function route(desc,cat){
+ let s=desc.toLowerCase(), department='Municipal / Local Body',office='Local Ward Office',confidence=86;
+ if(/street light|road|pothole|drain|garbage|waste|sewage/.test(s)){department='Municipal / Public Infrastructure';office='Local Ward / Municipal Office';confidence=94}
+ else if(/water|pipeline|drinking/.test(s)){department='Water Supply Department';office='Local Water Board Office';confidence=92}
+ else if(/power|electricity|transformer|current/.test(s)){department='Electricity Department';office='Local Electricity Section';confidence=93}
+ else if(cat==='Public Transport'){department='Transport Department';office='Regional Transport / Local Transit Office';confidence=89}
+ else if(cat==='Public Services'){department='District Administration';office='Taluk / Local Administrative Office';confidence=88}
+ return {department,office,confidence}
+}
+function showResults(r){
+ let id='GRV'+new Date().getFullYear()+Math.floor(100000+Math.random()*900000);state.id=id;
+ localStorage.setItem('grievance_'+id,JSON.stringify({...state.data,id,status:'Under Review'}));
+ document.getElementById('submitPages').innerHTML=`<div class="success"><div class="successIcon">✓</div><h2>Grievance Submitted Successfully</h2><p>Your demo grievance has been created and routed for review.</p><div class="complaintId">${id}</div><div class="resultGrid" style="text-align:left;margin-top:25px"><div class="result"><span class="tag">AI ROUTING</span><h3>${r.department}</h3><p>Suggested office: <b>${r.office}</b></p><div class="confidence">AI routing confidence: ${r.confidence}%</div></div><div class="result"><span class="tag">STATUS</span><h3>Under Review</h3><p>Track your complaint using the grievance ID above.</p></div></div><div class="actions"><button class="btn primary" onclick="document.getElementById('trackId').value='${id}';go('track');track()">Track This Complaint</button><button class="btn secondary" onclick="start()">File Another Grievance</button></div></div>`;
+ document.getElementById('progress').innerHTML='';
+}
+function track(){
+ let id=document.getElementById('trackId').value.trim(), raw=localStorage.getItem('grievance_'+id), box=document.getElementById('trackResult');
+ if(!raw){box.innerHTML='<div class="notice">No demo complaint found for this ID. Submit a grievance here first or use the generated ID.</div>';return}
+ let d=JSON.parse(raw);
+ box.innerHTML=`<div class="card" style="margin-top:20px;box-shadow:none"><h3 style="color:var(--navy)">Complaint ${d.id}</h3><p style="color:var(--muted)">${esc(d.desc)}</p><p><b>Department:</b> ${esc(d.route.department)} &nbsp; • &nbsp; <b>Office:</b> ${esc(d.route.office)}</p><div class="timeline">
+ <div class="tl done"><div class="dot"></div><div><h4>Submitted</h4><p>Complaint received successfully.</p></div></div>
+ <div class="tl current"><div class="dot"></div><div><h4>Under Review</h4><p>Complaint is being reviewed and routed.</p></div></div>
+ <div class="tl"><div class="dot"></div><div><h4>Assigned</h4><p>Concerned office will be assigned.</p></div></div>
+ <div class="tl"><div class="dot"></div><div><h4>In Progress</h4><p>Action will be initiated.</p></div></div>
+ <div class="tl"><div class="dot"></div><div><h4>Resolved</h4><p>Resolution will be recorded.</p></div></div></div></div>`
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+renderSubmit();
+</script>
+</body>
+</html>
